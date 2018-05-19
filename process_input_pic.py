@@ -122,7 +122,7 @@ def list_to_iterator(images, labels):
     将list转化成iterator
     :param images: 输入的image-list
     :param labels: 输入的labels-list
-    :return: （image-iter,labels-iter）
+    :return: 返回（image-iter,labels-iter）
     '''
     images_iter = iter(images)
     labels_iter = iter(labels)
@@ -169,11 +169,15 @@ if __name__ == '__main__':
     train, train_label, val, val_label = get_files(train_dir, 0.2)
     train_iter, train_label_iter = list_to_iterator(train, train_label)
 
-    image_batch, label_batch = get_nparray_batch(train_iter, train_label_iter, 64, 64, 3, 1)
+    image_batch, label_batch = get_nparray_batch(
+        train_iter, train_label_iter, 64, 64, 3, 1)
     print("image_batch", image_batch, "label_batch", label_batch)
-    image_batch, label_batch = get_nparray_batch(train_iter, train_label_iter, 64, 64, 3, 3)
+    image_batch, label_batch = get_nparray_batch(
+        train_iter, train_label_iter, 64, 64, 3, 3)
     print("image_batch", image_batch, "label_batch", label_batch)
-    image_batch, label_batch = get_nparray_batch(train_iter, train_label_iter, 64, 64, 3, 1)
+    image_batch, label_batch = get_nparray_batch(
+        train_iter, train_label_iter, 64, 64, 3, 1)
     print("image_batch", image_batch, "label_batch", label_batch)
-    image_batch, label_batch = get_nparray_batch(train_iter, train_label_iter, 64, 64, 3, 1)
+    image_batch, label_batch = get_nparray_batch(
+        train_iter, train_label_iter, 64, 64, 3, 1)
     print("image_batch", image_batch, "label_batch", label_batch)
