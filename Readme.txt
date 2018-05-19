@@ -1,0 +1,3 @@
+triangle
+circle
+rectangle
