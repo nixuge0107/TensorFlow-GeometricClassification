@@ -29,7 +29,8 @@ train, train_label, val, val_label = get_files(train_dir, 0.2)
 # 将list转化为iter
 # train_iter, train_label_iter = list_to_iterator(train, train_label)
 # 训练数据及标签
-train_batch, train_label_batch = get_batch(train, train_label, IMG_W, IMG_H, BATCH_SIZE, CAPACITY)
+train_batch, train_label_batch = get_batch(
+    train, train_label, IMG_W, IMG_H, BATCH_SIZE, CAPACITY)
 # 测试数据及标签
 # val_batch, val_label_batch = get_batch(val, val_label, IMG_W, IMG_H, BATCH_SIZE, CAPACITY)
 
@@ -69,20 +70,24 @@ try:
             break
         # 获取batch数据
         try:
-            image_batch, label_batch = get_nparray_batch(train_iter, train_label_iter, IMG_W, IMG_H, 3, BATCH_SIZE)
+            image_batch, label_batch = get_nparray_batch(
+                train_iter, train_label_iter, IMG_W, IMG_H, 3, BATCH_SIZE)
         except:
             train_iter, train_label_iter = list_to_iterator(train, train_label)
-            image_batch, label_batch = get_nparray_batch(train_iter, train_label_iter, IMG_W, IMG_H, 3, BATCH_SIZE)
+            image_batch, label_batch = get_nparray_batch(
+                train_iter, train_label_iter, IMG_W, IMG_H, 3, BATCH_SIZE)
             print("获取完了")
 
         # 启动以下操作节点，有个疑问，为什么train_logits在这里没有开启？
         # _, tra_loss, tra_acc = sess.run([train_op, train_loss, train_acc],
         #                                 feed_dict={GRAPH['input_images']: train_batch})
-        _, tra_loss, tra_acc = sess.run([train_op, train_loss, train_acc], feed_dict={X: image_batch, Y: label_batch})
+        _, tra_loss, tra_acc = sess.run([train_op, train_loss, train_acc], feed_dict={
+                                        X: image_batch, Y: label_batch})
 
         # 每隔50步打印一次当前的loss以及acc，同时记录log，写入writer
         if step % 10 == 0:
-            print('Step %d, train loss = %.2f, train accuracy = %.2f%%' % (step, tra_loss, tra_acc * 100.0))
+            print('Step %d, train loss = %.2f, train accuracy = %.2f%%' %
+                  (step, tra_loss, tra_acc * 100.0))
             # summary_str = sess.run(summary_op)
             # train_writer.add_summary(summary_str, step)
         # 每隔100步，保存一次训练好的模型
@@ -90,7 +95,8 @@ try:
             checkpoint_path = os.path.join(logs_train_ckpt_dir, 'model.ckpt')
             saver.save(sess, checkpoint_path, global_step=step)
             # 保存到pb文件
-            graph_def = tf.get_default_graph().as_graph_def()  # 得到当前的图的 GraphDef 部分，通过这个部分就可以完成重输入层到输出层的计算过程
+            # 得到当前的图的 GraphDef 部分，通过这个部分就可以完成重输入层到输出层的计算过程
+            graph_def = tf.get_default_graph().as_graph_def()
             # 打开一个文件
             fo = open("foo.txt", "w")
             fo.write(str(graph_def))
