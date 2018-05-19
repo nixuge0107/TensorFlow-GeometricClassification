@@ -16,7 +16,7 @@ IMG_H = 64
 BATCH_SIZE = 40
 CAPACITY = 200
 MAX_STEP = 100  # 一般大于10K
-learning_rate = 0.11010  # 一般小于0.0001
+learning_rate = 0.00010  # 一般小于0.0001
 
 # 获取批次batch
 train_dir = 'D:/train_data/image_data/input_data'  # 训练样本的读入路径
