@@ -122,7 +122,7 @@ def list_to_iterator(images, labels):
     将list转化成iterator
     :param images: 输入的image-list
     :param labels: 输入的labels-list
-    :return: 返回（image-iter,labels-iter）
+    :return: （image-iter,labels-iter）
     '''
     images_iter = iter(images)
     labels_iter = iter(labels)
