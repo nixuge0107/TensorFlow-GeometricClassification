@@ -8,15 +8,16 @@ from tensorflow.python.framework import graph_util
 from build_train_model import inference, losses, trainning, evaluation, X, Y
 from process_input_pic import get_batch, get_files, list_to_iterator, get_nparray_batch
 from val_train_model.val_train_model import get_one_image, get_image, evaluate_one_image
+from val_train_model.val_train_model_from_pb import recognize
 
 # 变量声明
 N_CLASSES = 3
 IMG_W = 64  # resize图像，太大的话训练时间久
 IMG_H = 64
-BATCH_SIZE = 40
+BATCH_SIZE = 20
 CAPACITY = 200
-MAX_STEP = 100  # 一般大于10K
-learning_rate = 0.00010  # 一般小于0.0001
+MAX_STEP = 300  # 一般大于10K
+learning_rate = 0.0005  # 一般小于0.0001
 
 # 获取批次batch
 train_dir = 'D:/train_data/image_data/input_data'  # 训练样本的读入路径
@@ -81,8 +82,13 @@ try:
         # 启动以下操作节点，有个疑问，为什么train_logits在这里没有开启？
         # _, tra_loss, tra_acc = sess.run([train_op, train_loss, train_acc],
         #                                 feed_dict={GRAPH['input_images']: train_batch})
-        _, tra_loss, tra_acc = sess.run([train_op, train_loss, train_acc], feed_dict={
-                                        X: image_batch, Y: label_batch})
+        # _, tra_loss, tra_acc = sess.run([train_op, train_loss, train_acc], feed_dict={X: image_batch, Y: label_batch})
+
+        _ = sess.run(train_op, feed_dict={X: image_batch, Y: label_batch})
+        tra_loss = sess.run(train_loss, feed_dict={
+            X: image_batch, Y: label_batch})
+        tra_acc = sess.run(train_acc, feed_dict={
+                           X: image_batch, Y: label_batch})
 
         # 每隔50步打印一次当前的loss以及acc，同时记录log，写入writer
         if step % 10 == 0:
@@ -123,28 +129,28 @@ except tf.errors.OutOfRangeError:
 finally:
     coord.request_stop()
 
-"""
-验证结果
-"""
 
-# right_num = 0
-# false_num = 0
-# for i in range(len(val)):
-#     print(val[i])
-#     img = get_image(val[i])
-#     img = img.flatten() / 255.0
-#     if evaluate_one_image(img) == val_label[i]:
-#         right_num += 1
-#     else:
-#         false_num += 1
-#         if evaluate_one_image(img) == 0:
-#             print("三角")
-#         elif evaluate_one_image(img) == 1:
-#             print("圆形")
-#         else:
-#             print("方形")
-#         print(val_label[i])
-#         # plt.show()
-#
-# print(right_num, false_num)
-# print("正确率：%f", right_num / (right_num + false_num))
+# 验证结果
+
+
+right_num = 0
+false_num = 0
+for i in range(len(val)):
+    print(val[i])
+
+    if recognize(val[i],
+                 "D:/train_data/image_data/input_data/pb/output.pb") == val_label[i]:
+        right_num += 1
+    else:
+        false_num += 1
+        # if evaluate_one_image(img) == 0:
+        #     print("三角")
+        # elif evaluate_one_image(img) == 1:
+        #     print("圆形")
+        # else:
+        #     print("方形")
+        # print(val_label[i])
+        # plt.show()
+
+print(right_num, false_num)
+print("正确率：%f", right_num / (right_num + false_num))

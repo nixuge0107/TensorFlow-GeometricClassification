@@ -101,7 +101,7 @@ def inference(batch_size, n_classes):
 # 传入参数：logits，网络计算输出值。labels，真实值，在这里是0或者1
 # 返回参数：loss，损失值
 def losses(logits, batch_size):
-    y = tf.reshape(Y, shape=[-1])
+    # y = tf.reshape(Y, shape=[-1])
     with tf.variable_scope('loss') as scope:
         cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=Y,
                                                                        name='xentropy_per_example')
@@ -127,7 +127,7 @@ def trainning(loss, learning_rate):
 # 输入参数：logits，网络计算值。labels，标签，也就是真实值，在这里是0或者1。
 # 返回参数：accuracy，当前step的平均准确率，也就是在这些batch中多少张图片被正确分类了。
 def evaluation(logits, batch_size):
-    y = tf.reshape(Y, shape=[-1])
+    # y = tf.reshape(Y, shape=[-1])
     with tf.variable_scope('accuracy') as scope:
         correct = tf.nn.in_top_k(logits, Y, 1)
         correct = tf.cast(correct, tf.float16)
