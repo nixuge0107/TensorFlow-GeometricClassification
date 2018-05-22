@@ -53,4 +53,4 @@ def recognize(jpg_path, pb_file_path):
 
 if __name__ == '__main__':
     recognize("D:/train_data/image_data/input_data/triangle/525samples1.jpg",
-              "D:/train_data/image_data/input_data/pb/output.pb")
+              "D:/train_data/image_data/input_data/pb/inference.pb")
