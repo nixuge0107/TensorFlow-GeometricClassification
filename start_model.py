@@ -71,26 +71,21 @@ try:
 
         # 每隔100步，保存一次训练好的模型
         if (step + 1) == MAX_STEP:
+            #保存到ckpt文件
             checkpoint_path = os.path.join(logs_train_ckpt_dir, 'model.ckpt')
             saver.save(sess, checkpoint_path, global_step=step)
+
+
             # 保存到pb文件
             # 得到当前的图的 GraphDef 部分，通过这个部分就可以完成重输入层到输出层的计算过程
             graph_def = tf.get_default_graph().as_graph_def()
-            # 打开一个文件
-            fo = open("foo.txt", "w")
-            fo.write(str(graph_def))
-            # 关闭打开的文件
-            fo.close()
 
             output_graph_def = graph_util.convert_variables_to_constants(  # 模型持久化，将变量值固定
                 sess,
                 graph_def,
                 ["softmax_linear/softmax"]  # 需要保存节点的名字
             )
-            f1 = open("f11.txt", "w")
-            f1.write(str(output_graph_def))
-            # 关闭打开的文件
-            f1.close()
+
             with tf.gfile.GFile(logs_train_pb_dir, "wb") as f:  # 保存模型
                 f.write(output_graph_def.SerializeToString())  # 序列化输出
             print("%d ops in the final graph." % len(output_graph_def.node))
