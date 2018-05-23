@@ -132,12 +132,14 @@ def list_to_iterator(images, labels):
 def get_nparray_batch(images_iter, labels_iter, image_W, image_H, channal, batch_size):
     '''
     得到image&label的batch，用于输入图片及labels
-    :param images_iter:
-    :param labels_iter:
-    :param image_W:
-    :param image_H:
-    :param batch_size:
-    :return:
+    :param images_iter: 输入的images路径迭代器
+    :param labels_iter: 输入的labels迭代器
+    :param image_W: 图片像素宽
+    :param image_H: 图片像素高
+    :param batch_size: bitch_size大小
+    :return: 
+        - batch_x: [bitch_size,64*64*3]的图片数据
+        - batch_y: [bitch_size,2]的标签数据
     '''
     batch_x = np.zeros([batch_size, image_W * image_H * channal])
     batch_y = np.zeros([batch_size])
